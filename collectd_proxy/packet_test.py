@@ -5,9 +5,10 @@ import collectd_proxy.packet
 
 # Valid encrypted packet
 PACKET1_ENCRYPTED = True
-PACKET1_USER = 'test'
-PACKET1_KEY = 'password'
-PACKET1_DATA = base64.b64decode("""
+PACKET1_USER = "test"
+PACKET1_KEY = "password"
+PACKET1_DATA = base64.b64decode(
+    """
 AhAFYQAEdGVzdANHaqp7IFu67SmuxeyRT99FsbuWGjYSiicu4E5EozbvDJT6wEKN6TOVcM5WE6DF
 VgRHKbgWrhN8W0lbpk7oOIpRaGE89sMzrhXb8gg+Mjdv5t++LRSXNFL9UvKJfQhrnm06512AaO7Y
 lrIkiTkiy7ZRPHZuUq6oM9Y3HKfZuGv+Plg579AAPhALJIOEbN07ZZ3CyDjGElnkbtMH+g/ntOJM
@@ -32,8 +33,10 @@ MfUKzr0IUDYlKdwXP219oE+n56F1X8OMdzsIMbAPzWIa8TDIMQdLnTpzicjx1346bqENhGv3Nr3b
 MjkEenM6ZZAfEFXOYjjzs9aOOckfuk8+K61Vk/4Cfm7ewf+1YCw9/PYsJNlPychYZWgkB8BAXn8x
 +PJWWcXgrrRalD4m58RDQSpTyGlL0sVSaGIiqtVYnNGGxWQHCF+eAsv9djGtvFTQUFKt3rxcz1Nk
 XwT10qzi5Fxh7u5QbM6nMSQiWDhqSRb8ddflAfdYktf3LxDfE9vJ80EcMRzVW31HL2/L2AJiwhjg
-pFgKRYZ1RphU""")
-PACKET1_PAYLOAD = base64.b64decode("""
+pFgKRYZ1RphU"""
+)
+PACKET1_PAYLOAD = base64.b64decode(
+    """
 AAAADmNsaWVudC0wMQAACAAMFfs9jv/Q+MsACQAMAAAAAoAAAAAAAgAOaW50ZXJmYWNlAAADAAds
 bwAABAAOaWZfZXJyb3JzAAAGABgAAgICAAAAAAAAAAAAAAAAAAAAAAAIAAwV+z2O/9EA/gADAAll
 dGgxAAAEAA5pZl9vY3RldHMAAAYAGAACAgIAAAAAAACkgQAAAAAAA04CAAgADBX7PY7/0QNDAAQA
@@ -57,13 +60,15 @@ AAAAAAgADBX7PY7/0lKhAAUACFJFUwAABgAPAAECAAAAAAAAAAAACAAMFfs9jv/SVrkABQAIQ0FM
 AAAGAA8AAQIAAAAAAAAAAAAIAAwV+z2O/9Jc9AAFAAhUTEIAAAYADwABAgAAAAAAAAAAAAgADBX7
 PY7/0mDfAAUACFRSTQAABgAPAAECAAAAAAAAAAAACAAMFfs9jv/SZLEABQAIVEhSAAAGAA8AAQIA
 AAAAAAAAAAAIAAwV+z2O/9Jo8gAFAAhERlIAAAYADwABAgAAAAAAAAAAAAgADBX7PY7/0mytAAUA
-CE1DRQAABgAPAAECAAAAAAAAAAA=""")
+CE1DRQAABgAPAAECAAAAAAAAAAA="""
+)
 
 # Valid signed packet
 PACKET2_ENCRYPTED = False
-PACKET2_USER = 'user'
-PACKET2_KEY = 'secret'
-PACKET2_DATA = base64.b64decode("""
+PACKET2_USER = "user"
+PACKET2_KEY = "secret"
+PACKET2_DATA = base64.b64decode(
+    """
 AgAAKPKWfzVCe7xFTUPziv80qylHbSvsgQkLRBMltssLDvskdXNlcgAAAA5jbGllbnQtMDEAAAgA
 DBX7PY7/0nB1AAkADAAAAAKAAAAAAAIACGlycQAABAAIaXJxAAAFAAhNQ1AAAAYADwABAgAAAAAA
 AAABAAgADBX7PY7/0nOsAAUACEVSUgAABgAPAAECAAAAAAAAAAAACAAMFfs9jv/SdxQABQAITUlT
@@ -88,8 +93,10 @@ BQANc2xlZXBpbmcAAAYADwABAQAAAAAAgF1AAAgADBX7PY8Aa6rBAAUADHpvbWJpZXMAAAYADwAB
 AQAAAAAAAAAAAAgADBX7PY8Aa9flAAUADHN0b3BwZWQAAAYADwABAQAAAAAAAAAAAAgADBX7PY8A
 bANuAAUAC3BhZ2luZwAABgAPAAEBAAAAAAAAAAAACAAMFfs9jwBsLP0ABQAMYmxvY2tlZAAABgAP
 AAEBAAAAAAAAAAAACAAMFfs9jwBs26MABAAOZm9ya19yYXRlAAAFAAUAAAYADwABAgAAAAAAACmt
-""")
-PACKET2_PAYLOAD = base64.b64decode("""
+"""
+)
+PACKET2_PAYLOAD = base64.b64decode(
+    """
 AAAADmNsaWVudC0wMQAACAAMFfs9jv/ScHUACQAMAAAAAoAAAAAAAgAIaXJxAAAEAAhpcnEAAAUA
 CE1DUAAABgAPAAECAAAAAAAAAAEACAAMFfs9jv/Sc6wABQAIRVJSAAAGAA8AAQIAAAAAAAAAAAAI
 AAwV+z2O/9J3FAAFAAhNSVMAAAYADwABAgAAAAAAAAAAAAgADBX7PY7/0nvgAAUACFBJTgAABgAP
@@ -113,31 +120,34 @@ AAAAAAAIAAwV+z2PAGtzGgAFAA1zbGVlcGluZwAABgAPAAEBAAAAAACAXUAACAAMFfs9jwBrqsEA
 BQAMem9tYmllcwAABgAPAAEBAAAAAAAAAAAACAAMFfs9jwBr1+UABQAMc3RvcHBlZAAABgAPAAEB
 AAAAAAAAAAAACAAMFfs9jwBsA24ABQALcGFnaW5nAAAGAA8AAQEAAAAAAAAAAAAIAAwV+z2PAGws
 /QAFAAxibG9ja2VkAAAGAA8AAQEAAAAAAAAAAAAIAAwV+z2PAGzbowAEAA5mb3JrX3JhdGUAAAUA
-BQAABgAPAAECAAAAAAAAKa0=""")
+BQAABgAPAAECAAAAAAAAKa0="""
+)
+
 
 class PacketTest(unittest.TestCase):
-
     def test_read_integer(self):
 
         # Valid reads
-        self.assertEquals(1, collectd_proxy.packet._read_integer('\0\1', 0))
-        self.assertEquals(256, collectd_proxy.packet._read_integer('\1\0', 0))
+        self.assertEquals(1, collectd_proxy.packet._read_integer("\0\1", 0))
+        self.assertEquals(256, collectd_proxy.packet._read_integer("\1\0", 0))
+
+        def invalid():
+            collectd_proxy.packet._read_integer("\0\0", 1)
 
         # Invalid read (exceeds right bound)
-        def invalid():
-            collectd_proxy.packet._read_integer('\0\0', 1)
         self.assertRaises(AssertionError, invalid)
 
     def test_read_substring(self):
 
         # Valid reads
-        self.assertEquals('te', collectd_proxy.packet._read_substring('test', 0, 2))
-        self.assertEquals('st', collectd_proxy.packet._read_substring('test', 2, 2))
-        self.assertEquals('st', collectd_proxy.packet._read_substring('test', 2))
+        self.assertEquals("te", collectd_proxy.packet._read_substring("test", 0, 2))
+        self.assertEquals("st", collectd_proxy.packet._read_substring("test", 2, 2))
+        self.assertEquals("st", collectd_proxy.packet._read_substring("test", 2))
+
+        def invalid():
+            collectd_proxy.packet._read_substring("test", 2, 3)
 
         # Invalid read (exceeds right bound)
-        def invalid():
-            collectd_proxy.packet._read_substring('test', 2, 3)
         self.assertRaises(AssertionError, invalid)
 
     def test_read_encrypted(self):
@@ -148,40 +158,46 @@ class PacketTest(unittest.TestCase):
         packet2_encrypted = collectd_proxy.packet.read_encrypted(PACKET2_DATA)
         self.assertEquals(PACKET2_ENCRYPTED, packet2_encrypted)
 
-        # Plain packet
         def invalid():
             collectd_proxy.packet.read_encrypted(PACKET2_PAYLOAD)
+
+        # Plain packet
         self.assertRaises(AssertionError, invalid)
 
     def test_read_user(self):
 
         # Valid encrypted/signed packets
-        packet1_user = collectd_proxy.packet.read_user(
-            PACKET1_DATA, PACKET1_ENCRYPTED)
+        packet1_user = collectd_proxy.packet.read_user(PACKET1_DATA, PACKET1_ENCRYPTED)
         self.assertEquals(PACKET1_USER, packet1_user)
-        packet2_user = collectd_proxy.packet.read_user(
-            PACKET2_DATA, PACKET2_ENCRYPTED)
+        packet2_user = collectd_proxy.packet.read_user(PACKET2_DATA, PACKET2_ENCRYPTED)
         self.assertEquals(PACKET2_USER, packet2_user)
 
     def test_read_payload(self):
 
         # Valid encrypted/signed packets
         packet1_payload = collectd_proxy.packet.read_payload(
-            PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, PACKET1_KEY)
+            PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, PACKET1_KEY
+        )
         self.assertEquals(PACKET1_PAYLOAD, packet1_payload)
         packet2_payload = collectd_proxy.packet.read_payload(
-            PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, PACKET2_KEY)
+            PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, PACKET2_KEY
+        )
         self.assertEquals(PACKET2_PAYLOAD, packet2_payload)
 
-        # Decrypt/verify with invalid key
         def invalid1():
             collectd_proxy.packet.read_payload(
-                PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, 'invalid')
-        self.assertRaises(AssertionError, invalid1)
+                PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, "invalid"
+            )
+
         def invalid2():
             collectd_proxy.packet.read_payload(
-                PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, 'invalid')
+                PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, "invalid"
+            )
+
+        # Decrypt/verify with invalid key
+        self.assertRaises(AssertionError, invalid1)
         self.assertRaises(AssertionError, invalid2)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

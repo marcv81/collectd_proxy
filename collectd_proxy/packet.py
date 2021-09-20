@@ -3,6 +3,7 @@ import collectd_proxy.crypto
 PACKET_TYPE_SIGNED = 0x0200
 PACKET_TYPE_ENCRYPTED = 0x0210
 
+
 def _read_integer(string, start):
     """Reads a 2-bytes integer from a string (big endian).
 
@@ -11,6 +12,7 @@ def _read_integer(string, start):
     """
     assert start >= 0 and start < len(string) - 1
     return (ord(string[start]) << 8) | ord(string[start + 1])
+
 
 def _read_substring(string, start, length=None):
     """Reads a substring from a string.
@@ -29,6 +31,7 @@ def _read_substring(string, start, length=None):
     assert stop <= len(string)
     return string[start:stop]
 
+
 def read_encrypted(data):
     """Reads whether the data is encrypted or signed.
 
@@ -37,6 +40,7 @@ def read_encrypted(data):
     packet_type = _read_integer(data, 0)
     assert packet_type in (PACKET_TYPE_ENCRYPTED, PACKET_TYPE_SIGNED)
     return packet_type == PACKET_TYPE_ENCRYPTED
+
 
 def read_user(data, encrypted):
     """Reads the user who claims to have signed/encrypted the data.
@@ -52,6 +56,7 @@ def read_user(data, encrypted):
         user_length = _read_integer(data, 2) - 36
         assert user_length > 0
         return _read_substring(data, 36, user_length)
+
 
 def read_payload(data, encrypted, user, key):
     """Reads the decrypted/verified payload.

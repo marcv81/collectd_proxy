@@ -4,27 +4,27 @@ import base64
 import collectd_proxy.crypto
 
 # Data and associated SHA-1 and SHA-256 hashes
-TEST1_DATA = 'test'
-TEST1_SHA1_HASH = base64.b64decode('qUqP5cyxm6YcTAhz05Hph5gvu9M=')
-TEST1_SHA256_HASH = base64.b64decode('n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=')
+TEST1_DATA = "test"
+TEST1_SHA1_HASH = base64.b64decode("qUqP5cyxm6YcTAhz05Hph5gvu9M=")
+TEST1_SHA256_HASH = base64.b64decode("n4bQgYhMfWWaL+qgxVrQFaO/TxsrC4Is0V1sFbDwCgg=")
 
 # 16-bytes key and IV
-TEST2_KEY = base64.b64decode('a3FsdHlmem1vY3VpdndhcA==')
-TEST2_IV = base64.b64decode('ZWx0ZGtycGFnem9odnNucQ==')
+TEST2_KEY = base64.b64decode("a3FsdHlmem1vY3VpdndhcA==")
+TEST2_IV = base64.b64decode("ZWx0ZGtycGFnem9odnNucQ==")
 # 10-bytes encrypted/decrypted string
-TEST2_ENCRYPTED1 = base64.b64decode('Z21saXZzZW9keQ==')
-TEST2_DECRYPTED1 = base64.b64decode('nGCDqhPDdB9LAw==')
+TEST2_ENCRYPTED1 = base64.b64decode("Z21saXZzZW9keQ==")
+TEST2_DECRYPTED1 = base64.b64decode("nGCDqhPDdB9LAw==")
 # 16-bytes encrypted/decrypted string
-TEST2_ENCRYPTED2 = base64.b64decode('cnNvZWNnYnFoam5tdHV5dw==')
-TEST2_DECRYPTED2 = base64.b64decode('iX6ApgbXcwFHEJ8dv8ySFg==')
+TEST2_ENCRYPTED2 = base64.b64decode("cnNvZWNnYnFoam5tdHV5dw==")
+TEST2_DECRYPTED2 = base64.b64decode("iX6ApgbXcwFHEJ8dv8ySFg==")
 
 # Key, data and associated HMAC SHA-256 signature
-TEST3_KEY = 'secret'
-TEST3_DATA = 'message'
-TEST3_SIGNATURE = base64.b64decode('i19IcCmVwVmMVz2x4hhmqbgl1KeU0WnXBgoDYFeWNgs=')
+TEST3_KEY = "secret"
+TEST3_DATA = "message"
+TEST3_SIGNATURE = base64.b64decode("i19IcCmVwVmMVz2x4hhmqbgl1KeU0WnXBgoDYFeWNgs=")
+
 
 class CryptoTest(unittest.TestCase):
-
     def test_sha1_hash(self):
         digest = collectd_proxy.crypto.sha1_hash(TEST1_DATA)
         self.assertEquals(20, len(digest))
@@ -37,10 +37,12 @@ class CryptoTest(unittest.TestCase):
 
     def test_aes256_decrypt(self):
         decrypted1 = collectd_proxy.crypto.aes256_decrypt(
-            TEST2_KEY, TEST2_IV, TEST2_ENCRYPTED1)
+            TEST2_KEY, TEST2_IV, TEST2_ENCRYPTED1
+        )
         self.assertEquals(TEST2_DECRYPTED1, decrypted1)
         decrypted2 = collectd_proxy.crypto.aes256_decrypt(
-            TEST2_KEY, TEST2_IV, TEST2_ENCRYPTED2)
+            TEST2_KEY, TEST2_IV, TEST2_ENCRYPTED2
+        )
         self.assertEquals(TEST2_DECRYPTED2, decrypted2)
 
     def test_hmac_sha256_sign(self):
@@ -48,5 +50,6 @@ class CryptoTest(unittest.TestCase):
         self.assertEquals(32, len(signature))
         self.assertEquals(TEST3_SIGNATURE, signature)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
