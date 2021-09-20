@@ -8,7 +8,7 @@ import packet
 RECEIVE_BUFFER_SIZE = 4096
 
 # Read config location
-config_filename = "/etc/collectd_proxy/collectd_proxy.ini"
+config_filename = "collectd_proxy.ini"
 if len(sys.argv) > 1:
     config_filename = sys.argv[1]
 

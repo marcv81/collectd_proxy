@@ -4,7 +4,25 @@ collectd_proxy is a proxy for the collectd network protocol. It accepts
 encrypted or signed packets, and forwards them as plain packets.
 
 Some third-party applications support the collectd protocol, but only the
-plain packets. collectd_proxy allows to build a secure interface.
+plain packets. collectd_proxy allows to use such applications over an
+untrusted network.
+
+## Setup
+
+Setup a virtualenv.
+
+    virtualenv -p python3 venv
+    source venv/bin/activate
+    pip3 install -r requirements.txt
+
+Run the unit tests.
+
+    python3 -m unittest discover .
+
+Run the program. An optional argument specifies the location of the config
+file. `collectd_proxy.ini` is used by default.
+
+    python3 server.py
 
 ## Example
 
@@ -13,7 +31,8 @@ client publishes statistics over an untrusted network.
 
 ### InfluxDB
 
-Listen to the plain collectd protocol on the loopback interface only.
+In `influxdb.conf`, listen to the plain collectd protocol on the loopback
+interface only.
 
     [[collectd]]
       enabled = true
@@ -21,8 +40,8 @@ Listen to the plain collectd protocol on the loopback interface only.
 
 ### collectd_proxy
 
-Forward the encrypted or signed packets received on port 25827 as plain
-packets on port 25826.
+In `collectd_proxy.ini`, forward the encrypted or signed packets received
+on port 25827 as plain packets on port 25826.
 
     [proxy]
     listen_host = 0.0.0.0
@@ -35,7 +54,7 @@ packets on port 25826.
 
 ### collectd
 
-Encrypt the statistics.
+In `collectd.conf`, encrypt the statistics and send them to collectd_proxy.
 
     <Plugin network>
         <Server "server" "25827">
