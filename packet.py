@@ -1,4 +1,4 @@
-import collectd_proxy.crypto
+import crypto
 
 PACKET_TYPE_SIGNED = 0x0200
 PACKET_TYPE_ENCRYPTED = 0x0210
@@ -70,15 +70,15 @@ def read_payload(data, encrypted, user, key):
     if encrypted:
 
         # Decrypt data
-        hashed_key = collectd_proxy.crypto.sha256_hash(key)
+        hashed_key = crypto.sha256_hash(key)
         iv = _read_substring(data, 6 + len(user), 16)
         encrypted = _read_substring(data, 22 + len(user))
-        decrypted = collectd_proxy.crypto.aes256_decrypt(hashed_key, iv, encrypted)
+        decrypted = crypto.aes256_decrypt(hashed_key, iv, encrypted)
 
         # Verify hash
         hash = _read_substring(decrypted, 0, 20)
         payload = _read_substring(decrypted, 20)
-        assert hash == collectd_proxy.crypto.sha1_hash(payload)
+        assert hash == crypto.sha1_hash(payload)
         return payload
 
     else:
@@ -86,5 +86,5 @@ def read_payload(data, encrypted, user, key):
         # Verify hash
         hash = _read_substring(data, 4, 32)
         payload = _read_substring(data, 36 + len(user))
-        assert hash == collectd_proxy.crypto.hmac_sha256_sign(key, user + payload)
+        assert hash == crypto.hmac_sha256_sign(key, user + payload)
         return payload

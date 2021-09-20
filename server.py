@@ -3,7 +3,7 @@ import socket
 import traceback
 import sys
 
-import collectd_proxy.packet
+import packet
 
 RECEIVE_BUFFER_SIZE = 4096
 
@@ -31,11 +31,11 @@ while True:
 
     # Try to decrypt/verify the payload
     try:
-        encrypted = collectd_proxy.packet.read_encrypted(data)
-        user = collectd_proxy.packet.read_user(data, encrypted)
+        encrypted = packet.read_encrypted(data)
+        user = packet.read_user(data, encrypted)
         assert config.has_option("users", user)
         key = str(config.get("users", user))
-        payload = collectd_proxy.packet.read_payload(data, encrypted, user, key)
+        payload = packet.read_payload(data, encrypted, user, key)
 
     # Print a stack trace in case of error
     except AssertionError:

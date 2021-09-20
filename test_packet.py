@@ -1,7 +1,7 @@
 import unittest
 import base64
 
-import collectd_proxy.packet
+import packet
 
 # Valid encrypted packet
 PACKET1_ENCRYPTED = True
@@ -128,11 +128,11 @@ class PacketTest(unittest.TestCase):
     def test_read_integer(self):
 
         # Valid reads
-        self.assertEquals(1, collectd_proxy.packet._read_integer("\0\1", 0))
-        self.assertEquals(256, collectd_proxy.packet._read_integer("\1\0", 0))
+        self.assertEquals(1, packet._read_integer("\0\1", 0))
+        self.assertEquals(256, packet._read_integer("\1\0", 0))
 
         def invalid():
-            collectd_proxy.packet._read_integer("\0\0", 1)
+            packet._read_integer("\0\0", 1)
 
         # Invalid read (exceeds right bound)
         self.assertRaises(AssertionError, invalid)
@@ -140,12 +140,12 @@ class PacketTest(unittest.TestCase):
     def test_read_substring(self):
 
         # Valid reads
-        self.assertEquals("te", collectd_proxy.packet._read_substring("test", 0, 2))
-        self.assertEquals("st", collectd_proxy.packet._read_substring("test", 2, 2))
-        self.assertEquals("st", collectd_proxy.packet._read_substring("test", 2))
+        self.assertEquals("te", packet._read_substring("test", 0, 2))
+        self.assertEquals("st", packet._read_substring("test", 2, 2))
+        self.assertEquals("st", packet._read_substring("test", 2))
 
         def invalid():
-            collectd_proxy.packet._read_substring("test", 2, 3)
+            packet._read_substring("test", 2, 3)
 
         # Invalid read (exceeds right bound)
         self.assertRaises(AssertionError, invalid)
@@ -153,13 +153,13 @@ class PacketTest(unittest.TestCase):
     def test_read_encrypted(self):
 
         # Valid encrypted/signed packets
-        packet1_encrypted = collectd_proxy.packet.read_encrypted(PACKET1_DATA)
+        packet1_encrypted = packet.read_encrypted(PACKET1_DATA)
         self.assertEquals(PACKET1_ENCRYPTED, packet1_encrypted)
-        packet2_encrypted = collectd_proxy.packet.read_encrypted(PACKET2_DATA)
+        packet2_encrypted = packet.read_encrypted(PACKET2_DATA)
         self.assertEquals(PACKET2_ENCRYPTED, packet2_encrypted)
 
         def invalid():
-            collectd_proxy.packet.read_encrypted(PACKET2_PAYLOAD)
+            packet.read_encrypted(PACKET2_PAYLOAD)
 
         # Plain packet
         self.assertRaises(AssertionError, invalid)
@@ -167,30 +167,30 @@ class PacketTest(unittest.TestCase):
     def test_read_user(self):
 
         # Valid encrypted/signed packets
-        packet1_user = collectd_proxy.packet.read_user(PACKET1_DATA, PACKET1_ENCRYPTED)
+        packet1_user = packet.read_user(PACKET1_DATA, PACKET1_ENCRYPTED)
         self.assertEquals(PACKET1_USER, packet1_user)
-        packet2_user = collectd_proxy.packet.read_user(PACKET2_DATA, PACKET2_ENCRYPTED)
+        packet2_user = packet.read_user(PACKET2_DATA, PACKET2_ENCRYPTED)
         self.assertEquals(PACKET2_USER, packet2_user)
 
     def test_read_payload(self):
 
         # Valid encrypted/signed packets
-        packet1_payload = collectd_proxy.packet.read_payload(
+        packet1_payload = packet.read_payload(
             PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, PACKET1_KEY
         )
         self.assertEquals(PACKET1_PAYLOAD, packet1_payload)
-        packet2_payload = collectd_proxy.packet.read_payload(
+        packet2_payload = packet.read_payload(
             PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, PACKET2_KEY
         )
         self.assertEquals(PACKET2_PAYLOAD, packet2_payload)
 
         def invalid1():
-            collectd_proxy.packet.read_payload(
+            packet.read_payload(
                 PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, "invalid"
             )
 
         def invalid2():
-            collectd_proxy.packet.read_payload(
+            packet.read_payload(
                 PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, "invalid"
             )
 
