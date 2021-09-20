@@ -5,8 +5,8 @@ import packet
 
 # Valid encrypted packet
 PACKET1_ENCRYPTED = True
-PACKET1_USER = "test"
-PACKET1_KEY = "password"
+PACKET1_USER = "test".encode()
+PACKET1_KEY = "password".encode()
 PACKET1_DATA = base64.b64decode(
     """
 AhAFYQAEdGVzdANHaqp7IFu67SmuxeyRT99FsbuWGjYSiicu4E5EozbvDJT6wEKN6TOVcM5WE6DF
@@ -65,8 +65,8 @@ CE1DRQAABgAPAAECAAAAAAAAAAA="""
 
 # Valid signed packet
 PACKET2_ENCRYPTED = False
-PACKET2_USER = "user"
-PACKET2_KEY = "secret"
+PACKET2_USER = "user".encode()
+PACKET2_KEY = "secret".encode()
 PACKET2_DATA = base64.b64decode(
     """
 AgAAKPKWfzVCe7xFTUPziv80qylHbSvsgQkLRBMltssLDvskdXNlcgAAAA5jbGllbnQtMDEAAAgA
@@ -128,11 +128,11 @@ class PacketTest(unittest.TestCase):
     def test_read_integer(self):
 
         # Valid reads
-        self.assertEquals(1, packet._read_integer("\0\1", 0))
-        self.assertEquals(256, packet._read_integer("\1\0", 0))
+        self.assertEqual(1, packet._read_integer(b"\0\1", 0))
+        self.assertEqual(256, packet._read_integer(b"\1\0", 0))
 
         def invalid():
-            packet._read_integer("\0\0", 1)
+            packet._read_integer(b"\0\0", 1)
 
         # Invalid read (exceeds right bound)
         self.assertRaises(AssertionError, invalid)
@@ -140,12 +140,12 @@ class PacketTest(unittest.TestCase):
     def test_read_substring(self):
 
         # Valid reads
-        self.assertEquals("te", packet._read_substring("test", 0, 2))
-        self.assertEquals("st", packet._read_substring("test", 2, 2))
-        self.assertEquals("st", packet._read_substring("test", 2))
+        self.assertEqual(b"te", packet._read_substring(b"test", 0, 2))
+        self.assertEqual(b"st", packet._read_substring(b"test", 2, 2))
+        self.assertEqual(b"st", packet._read_substring(b"test", 2))
 
         def invalid():
-            packet._read_substring("test", 2, 3)
+            packet._read_substring(b"test", 2, 3)
 
         # Invalid read (exceeds right bound)
         self.assertRaises(AssertionError, invalid)
@@ -154,9 +154,9 @@ class PacketTest(unittest.TestCase):
 
         # Valid encrypted/signed packets
         packet1_encrypted = packet.read_encrypted(PACKET1_DATA)
-        self.assertEquals(PACKET1_ENCRYPTED, packet1_encrypted)
+        self.assertEqual(PACKET1_ENCRYPTED, packet1_encrypted)
         packet2_encrypted = packet.read_encrypted(PACKET2_DATA)
-        self.assertEquals(PACKET2_ENCRYPTED, packet2_encrypted)
+        self.assertEqual(PACKET2_ENCRYPTED, packet2_encrypted)
 
         def invalid():
             packet.read_encrypted(PACKET2_PAYLOAD)
@@ -168,9 +168,9 @@ class PacketTest(unittest.TestCase):
 
         # Valid encrypted/signed packets
         packet1_user = packet.read_user(PACKET1_DATA, PACKET1_ENCRYPTED)
-        self.assertEquals(PACKET1_USER, packet1_user)
+        self.assertEqual(PACKET1_USER, packet1_user)
         packet2_user = packet.read_user(PACKET2_DATA, PACKET2_ENCRYPTED)
-        self.assertEquals(PACKET2_USER, packet2_user)
+        self.assertEqual(PACKET2_USER, packet2_user)
 
     def test_read_payload(self):
 
@@ -178,26 +178,22 @@ class PacketTest(unittest.TestCase):
         packet1_payload = packet.read_payload(
             PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, PACKET1_KEY
         )
-        self.assertEquals(PACKET1_PAYLOAD, packet1_payload)
+        self.assertEqual(PACKET1_PAYLOAD, packet1_payload)
         packet2_payload = packet.read_payload(
             PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, PACKET2_KEY
         )
-        self.assertEquals(PACKET2_PAYLOAD, packet2_payload)
+        self.assertEqual(PACKET2_PAYLOAD, packet2_payload)
 
         def invalid1():
             packet.read_payload(
-                PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, "invalid"
+                PACKET1_DATA, PACKET1_ENCRYPTED, PACKET1_USER, b"invalid"
             )
 
         def invalid2():
             packet.read_payload(
-                PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, "invalid"
+                PACKET2_DATA, PACKET2_ENCRYPTED, PACKET2_USER, b"invalid"
             )
 
         # Decrypt/verify with invalid key
         self.assertRaises(AssertionError, invalid1)
         self.assertRaises(AssertionError, invalid2)
-
-
-if __name__ == "__main__":
-    unittest.main()

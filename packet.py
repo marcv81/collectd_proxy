@@ -4,38 +4,28 @@ PACKET_TYPE_SIGNED = 0x0200
 PACKET_TYPE_ENCRYPTED = 0x0210
 
 
-def _read_integer(string, start):
-    """Reads a 2-bytes integer from a string (big endian).
-
-    @param string: string
-    @param start: integer start index
+def _read_integer(data, start):
+    """Reads a 2-bytes integer from data (big endian).
     """
-    assert start >= 0 and start < len(string) - 1
-    return (ord(string[start]) << 8) | ord(string[start + 1])
+    assert start >= 0 and start < len(data) - 1
+    return (data[start] << 8) | data[start + 1]
 
 
-def _read_substring(string, start, length=None):
-    """Reads a substring from a string.
-
-    @param string: string
-    @param start: substring start index
-    @param length: substring length
-
-    Stops at the end of the string if no length is specified.
+def _read_substring(data, start, length=None):
+    """Reads a substring of data. Stops at the end of
+    the data if no length is specified.
     """
-    assert start >= 0 and start < len(string)
+    assert start >= 0 and start < len(data)
     if length == None:
-        length = len(string) - start
+        length = len(data) - start
     assert length >= 0
     stop = start + length
-    assert stop <= len(string)
-    return string[start:stop]
+    assert stop <= len(data)
+    return data[start:stop]
 
 
 def read_encrypted(data):
-    """Reads whether the data is encrypted or signed.
-
-    @param data: packet data
+    """Reads whether a packet is encrypted or signed.
     """
     packet_type = _read_integer(data, 0)
     assert packet_type in (PACKET_TYPE_ENCRYPTED, PACKET_TYPE_SIGNED)
@@ -43,10 +33,7 @@ def read_encrypted(data):
 
 
 def read_user(data, encrypted):
-    """Reads the user who claims to have signed/encrypted the data.
-
-    @param data: packet data
-    @param encrypted: whether the data is encrypted or signed
+    """Reads the user who claims to have signed/encrypted the packet.
     """
     if encrypted:
         user_length = _read_integer(data, 4)
@@ -60,13 +47,7 @@ def read_user(data, encrypted):
 
 def read_payload(data, encrypted, user, key):
     """Reads the decrypted/verified payload.
-
-    @param data: packet data
-    @param encrypted: whether the data is encrypted or signed
-    @param user: the user who claims to have signed/encrypted the data
-    @param key: the key used to sign/encrypt the data
     """
-
     if encrypted:
 
         # Decrypt data
